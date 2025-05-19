@@ -6,4 +6,5 @@
 
   <xacro:include filename="$(find auv_control_demos)/xacro/individual_ros2_control.xacro" />
 
+  <xacro:include filename="$(find auv_control_demos)/xacro/individual_hydrodynamics.xacro" />
 </robot>
