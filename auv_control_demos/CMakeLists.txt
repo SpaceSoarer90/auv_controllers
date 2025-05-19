@@ -16,6 +16,9 @@ install(
         chained_controllers/launch
         chained_controllers/config
         chained_controllers/xacro
+        gz_passthrough_controller/launch
+        gz_passthrough_controller/config
+        gz_passthrough_controller/xacro
     DESTINATION share/${PROJECT_NAME}
 )
 
