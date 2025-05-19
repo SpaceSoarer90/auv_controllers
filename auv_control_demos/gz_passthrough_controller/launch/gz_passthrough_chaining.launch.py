@@ -57,17 +57,24 @@ def generate_launch_description():
         ],
     )
 
+    # i'm just gonna make a commit here
+    # cos i'm feeling proud i figured this one out
+    thruster_locations = ['left', 'right', 'vert']
+    for location in thruster_locations:
+        print(f"thruster_{location}_controller", "--controller-manager")
+    exit()
+
     thruster_spawners = [
         Node(
             package="controller_manager",
             executable="spawner",
             arguments=[
-                f"thruster_{i + 1}_controller",
+                f"thruster_{location}_controller",
                 "--controller-manager",
                 ["", "controller_manager"],
             ],
         )
-        for i in range(8)
+        for location in thruster_locations
     ]
 
     delay_thruster_spawners = []
