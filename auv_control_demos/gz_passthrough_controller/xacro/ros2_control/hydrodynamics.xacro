@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="https://www.ros.org/wiki/xacro">
+  <hydrodynamics>
+
+    <!-- mass & coriolis matrices -->
+    <inertial>
+      <mass value="18.25371" />
+      <inertia ixx="0.05765883" iyy="1.48076814" izz="1.48191254"/>
+      <!-- copied from main_body_link inertial origin -->
+      <center_of_gravity x="0.01332054" y="0.0" z="4.716e-7" />
+      <!-- copied from gz_plugins/hydrodynamics.xacro -->
+      <added_mass
+        Xdu="-2.91415709"
+        Ydv="-17.9135240"
+        Zdw="-16.94112"
+        Kdp="-0.000109"
+        Mdq="-0.702999"
+        Ndr="-0.301298" />
+    </inertial>
+
+    <!-- dissipation matrix -->
+    <damping>
+      <linear Xu="-4.03" Yv="-6.22" Zw="-5.18" Kp="-0.07" Mq="-0.07" Nr="-0.07" />
+      <quadratic Xuu="-18.18" Yvv="-21.66" Zww="-36.99" Kpp="-1.55" Mqq="-1.55" Nrr="-1.55" />
+    </damping>
+
+    <!-- restoring forces -->
+    <hydrostatics>
+      <!-- mass * g * fluid_density -->
+      <buoyancy value="179.0688951" />
+      <!-- copied from main_body_link collision origin -->
+      <center_of_buoyancy x="0.01125" y="0.0" z="0.05" />
+    </hydrostatics>
+
+  </hydrodynamics>
+</robot>

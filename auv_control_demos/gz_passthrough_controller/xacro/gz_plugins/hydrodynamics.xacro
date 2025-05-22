@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="https://www.ros.org/wiki/xacro">
+  <!-- <added_mass Xdu="-2.9141570936458696" Ydv="-17.913524024946703" Zdw="-16.941069781842728" Kdp="-0.00010932428741819432" Mdq="-0.702998654187364" Ndr="-0.30129788716289674" /> -->
+
+  <plugin filename="gz-sim-hydrodynamics-system" name="gz::sim::systems::Hydrodynamics">
+    <link_name>base_link</link_name>
+    <!-- gathered these values from capytaine python script -->
+    <xDotU>-2.91415709</xDotU>
+    <yDotV>-17.9135240</yDotV>
+    <zDotW>-16.94112</zDotW>
+    <kDotP>-0.000109</kDotP>
+    <mDotQ>-0.702999</mDotQ>
+    <nDotR>-0.301298</nDotR>
+    
+  </plugin>
+
+</robot>

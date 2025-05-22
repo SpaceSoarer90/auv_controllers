@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <link name="base_link" />
+
+  <joint name="main_body_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="main_body_link" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+
+  <link name="main_body_link">
+    <visual>
+      <geometry>
+        <!-- TODO add mesh files to this demo instead -->
+        <mesh filename="file://$(find sisid_description)/meshes/main_body.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <!-- moving the buoyancy collision upward makes it more stable,, interesting, -->
+      <origin xyz="0.01125 0 0.05" rpy="0 0 0" />
+      <!-- <origin xyz="-0.00690446 0 0.04" rpy="0 0 0" /> -->
+      <!-- <origin xyz="-0.009 0 0.035" rpy="0 0 0" /> -->
+      <geometry>
+        <!-- the volume of the main_body approximated with a box -->
+        <!-- neutrally buoyant when mass is 18.25371kg -->
+        <!-- <box size="0.991892 0.15875 0.115923819" /> -->
+
+        <!-- buoyancy collision with thruster masses -->
+        <box size="0.99189278792 0.15875 0.117068786" />
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- ros2_control/hydrodynamics.xacro values were taken from here -->
+      <!-- <origin xyz="-0.00690446 0 0" rpy="0 0 0" /> -->
+      <origin xyz="0.01332054 0 4.716e-7" rpy="0 0 0" />
+      <mass value="18.25371" />
+      <inertia ixx="0.05765883" iyy="1.48076814" izz="1.48191254"
+        ixy="1.714e-7" ixz="1.722e-6" iyz="3.368e-7" />
+    </inertial>
+  </link>
+
+
+  <xacro:property name="prop_x_dist" value="-0.29396250" />
+  <xacro:property name="prop_y_dist" value="0.12237500" />
+  <xacro:property name="prop_mass" value="0.06" />
+  <!-- <xacro:property name="prop_mass" value="0.001" /> -->
+  <xacro:property name="prop_diam" value="0.06" />
+  <xacro:property name="prop_length" value="0.04432758" />
+
+  <xacro:include filename="macros/thruster_macros.xacro" />
+  <!-- {location}_thruster_prop_[joint/link] -->
+  <xacro:thruster location="left" prop_config="cw">
+    <origin xyz="${prop_x_dist} ${prop_y_dist} 0" rpy="0 0 0"/>
+  </xacro:thruster>
+  <xacro:thruster location="right" prop_config="ccw">
+    <origin xyz="${prop_x_dist} -${prop_y_dist} 0" rpy="0 0 0"/>
+  </xacro:thruster>
+  <xacro:thruster location="vert" prop_config="ccw">
+    <origin xyz="-0.00331250 0 -0.00436704" rpy="0 -${pi/2} 0" />
+  </xacro:thruster>
+</robot>

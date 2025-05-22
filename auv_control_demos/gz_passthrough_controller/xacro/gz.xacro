@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="https://www.ros.org/wiki/xacro">
+  <gazebo>
+    <xacro:include filename="gz_plugins/thrusters.xacro" />
+    <xacro:include filename="gz_plugins/hydrodynamics.xacro" />
+
+  </gazebo>
+</robot>

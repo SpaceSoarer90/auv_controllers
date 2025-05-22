@@ -17,9 +17,13 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import os
+
+from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import RegisterEventHandler
+from launch.actions import RegisterEventHandler, IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.event_handlers import OnProcessExit
 from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
 from launch_ros.actions import Node
@@ -32,6 +36,12 @@ def generate_launch_description():
     Returns:
         The example launch description.
     """
+
+    # this file must be in the xacro/ folder
+    xacro_filename = "main.urdf.xacro"
+    # this file must be in the config/ folder
+    config_filename = "gz_passthrough_chained.yaml"
+    
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
@@ -40,12 +50,27 @@ def generate_launch_description():
                 [
                     FindPackageShare("auv_control_demos"),
                     "xacro",
-                    "chained_config.xacro",
+                    xacro_filename,
                 ]
             ),
+            'yaml_file:=',
+            config_filename,
         ]
     )
     robot_description = {"robot_description": robot_description_content}
+
+    # TODO place world file in the package directory instead
+    world = os.path.join(get_package_share_directory('sisid_description'), 'worlds', 'sisid_world.sdf')
+    gz_sim = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([os.path.join(
+                get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')]),
+                launch_arguments={'gz_args': ['-r -v4 ', world], 'on_exit_shutdown': 'true'}.items()
+         )
+    gz_sim_spawn = Node(package='ros_gz_sim', executable='create',
+                        arguments=['-topic', 'robot_description',
+                                   '-name', 'sisid_debug',
+                                   '-z', '-0.1'],
+                        output='screen')
 
     velocity_controller_spawner = Node(
         package="controller_manager",
@@ -57,12 +82,7 @@ def generate_launch_description():
         ],
     )
 
-    # i'm just gonna make a commit here
-    # cos i'm feeling proud i figured this one out
     thruster_locations = ['left', 'right', 'vert']
-    for location in thruster_locations:
-        print(f"thruster_{location}_controller", "--controller-manager")
-    exit()
 
     thruster_spawners = [
         Node(
@@ -125,8 +145,10 @@ def generate_launch_description():
             package="robot_state_publisher",
             executable="robot_state_publisher",
             output="both",
-            parameters=[robot_description],
+            parameters=[robot_description, "use_sim_time:=true"],
         ),
+        # gz_sim,
+        # gz_sim_spawn,
         Node(
             package="controller_manager",
             executable="ros2_control_node",
@@ -136,7 +158,7 @@ def generate_launch_description():
                     [
                         FindPackageShare("auv_control_demos"),
                         "config",
-                        "chained_controllers.yaml",
+                        config_filename,
                     ]
                 ),
             ],

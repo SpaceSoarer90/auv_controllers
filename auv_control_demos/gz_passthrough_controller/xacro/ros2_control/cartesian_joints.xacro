@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- <link name="odom" /> -->
+
+  <!-- cartesian joints to be used by the velocity controller (ISMC or AISMC) -->
+  <!-- i know i dont get how these joints work either... yet. -->
+  <xacro:macro name="cartesian_joints" params="name">
+    <joint name="${name}" type="continuous">
+      <parent link="base_link" />
+      <child link="main_body_link" />
+    </joint>
+  </xacro:macro>
+
+  <xacro:cartesian_joints name="x" />
+  <xacro:cartesian_joints name="y" />
+  <xacro:cartesian_joints name="z" />
+  <xacro:cartesian_joints name="rx" />
+  <xacro:cartesian_joints name="ry" />
+  <xacro:cartesian_joints name="rz" />
+
+</robot>

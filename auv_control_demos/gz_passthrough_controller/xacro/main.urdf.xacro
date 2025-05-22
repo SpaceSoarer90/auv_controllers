@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="https://www.ros.org/wiki/xacro" name="sisid">
+  <xacro:arg name="namespace" default="sisid_debug"/>
+
+  <!-- TODO implement this macro in the derivation of properties -->
+  <!-- AND these values must be from the onshape cad -->
+  <!-- <xacro:macro name="sisid_physical_properties" params="mass volume *cog *com"> -->
+
+
+  <xacro:include filename="sisid_core.xacro" />
+
+  <xacro:include filename="gz.xacro" />
+  <xacro:include filename="ros2_control.xacro"/>
+
+</robot>
+

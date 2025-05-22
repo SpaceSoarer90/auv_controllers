@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="https://www.ros.org/wiki/xacro">
+
+  <!-- i dont know what the fuck i did but it works now... -->
+  <!-- i think, its because you have to fully say that you dont wanna -->
+  <!-- use ang_vel and you want to use velocity control -->
+  <!-- TL;DR, just define as much parameters as you can -->
+  <plugin filename="gz-sim-thruster-system" name="gz::sim::systems::Thruster">
+    <joint_name>left_thruster_prop_joint</joint_name>
+    <thrust_coefficient>1.0</thrust_coefficient>
+    <fluid_density>1000</fluid_density>
+    <propeller_diameter>0.06</propeller_diameter>
+    <use_angvel_cmd>false</use_angvel_cmd>
+    <velocity_control>true</velocity_control>
+  </plugin>
+
+  <plugin filename="gz-sim-thruster-system" name="gz::sim::systems::Thruster">
+    <joint_name>right_thruster_prop_joint</joint_name>
+    <thrust_coefficient>1.0</thrust_coefficient>
+    <fluid_density>1000</fluid_density>
+    <propeller_diameter>0.06</propeller_diameter>
+    <use_angvel_cmd>false</use_angvel_cmd>
+    <velocity_control>true</velocity_control>
+  </plugin>
+
+  <plugin filename="gz-sim-thruster-system" name="gz::sim::systems::Thruster">
+    <joint_name>vert_thruster_prop_joint</joint_name>
+    <thrust_coefficient>1.0</thrust_coefficient>
+    <fluid_density>1000</fluid_density>
+    <propeller_diameter>0.06</propeller_diameter>
+    <use_angvel_cmd>false</use_angvel_cmd>
+    <velocity_control>true</velocity_control>
+  </plugin>
+
+</robot>

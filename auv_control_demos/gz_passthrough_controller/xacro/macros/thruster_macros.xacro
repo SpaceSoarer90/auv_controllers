@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="prop_inertial" params="*origin mass radius length">
+    <inertial>
+      <xacro:insert_block name="origin" />
+      <mass value="${prop_mass}" />
+      <inertia
+        izz="${mass*radius*radius / 4  + mass*length*length / 12}"
+        ixy="0.0" ixz="0.0"
+        iyy="${mass*radius*radius / 4  + mass*length*length / 12}"
+        iyz="0.0"
+        ixx="${mass*radius*radius / 2}" />
+    </inertial>
+  </xacro:macro>
+
+  <!-- unfortunately i dont know how to call it the joint_origin -->
+  <!-- but thats what it is -->
+  <!-- <xacro:macro name="thruster" params="*joint_origin location prop_config"> -->
+  <xacro:macro name="thruster" params="*origin location prop_config">
+    <joint name="${location}_thruster_prop_joint" type="continuous">
+      <parent link="main_body_link" />
+      <child link="${location}_thruster_prop_link" />
+      <xacro:insert_block name="origin" />
+    </joint>
+
+    <link name="${location}_thruster_prop_link">
+      <visual>
+        <geometry>
+          <!-- TODO add mesh files to this demo instead -->
+          <mesh filename="file://$(find sisid_description)/meshes/${prop_config}_thruster_prop.dae" />
+        </geometry>
+      </visual>
+      <xacro:prop_inertial mass="${prop_mass}" radius="${prop_diam / 2}" length="${prop_length}">
+        <origin xyz="-0.02216379 0 0" rpy="0 0 0" />
+      </xacro:prop_inertial>
+    </link>
+  </xacro:macro>
+
+</robot>
